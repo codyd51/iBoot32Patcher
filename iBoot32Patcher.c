@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 	}
 
 	fseek(fp, 0, SEEK_END);
-	iboot_in.len = ftell(fp);
+	iboot_in.len = ({ struct stat st; (stat(argv[1], &st) == 0 && S_ISREG(st.st_mode)) ? st.st_size : 0; });
 	fseek(fp, 0, SEEK_SET);
 
 	iboot_in.buf = (void*)malloc(iboot_in.len);
